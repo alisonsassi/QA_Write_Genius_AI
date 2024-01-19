@@ -22,3 +22,59 @@ Em resumo, o objetivo principal é criar um modelo de IA que analise e sugira me
 2. **Qualidade Aprimorada dos Casos de Teste:** Ao utilizar um modelo de inteligência artificial treinado com regras e padrões ideais de redação de casos de teste, espera-se que as sugestões fornecidas melhorem a qualidade geral da documentação de teste. Isso inclui uma estrutura mais clara, linguagem padronizada e uma abordagem mais abrangente para a redação dos casos de teste.
 3. **Padronização na Escrita:** A implementação desse sistema contribuirá para a uniformidade e consistência na escrita dos casos de teste em toda a equipe de QA. Ao seguir modelos e diretrizes predefinidos, a padronização promoverá uma compreensão mais clara e facilitará a colaboração entre os membros da equipe.
 4. **Aumento da Produtividade Global:** Com a redução do tempo gasto na redação manual dos casos de teste e a melhoria na qualidade desses documentos, o sistema permitirá que o time de QA se concentre mais nas atividades de testes em si. Isso levará a um aumento geral da produtividade e da eficácia no ciclo de desenvolvimento de software.
+
+
+**Solução inicial:**
+
+Ideia do Alison.... hehehe
+
+*Configuration*
+
+Insira a chave de API gerada da OpenAI no arquivo "configAI":
+
+```python
+class OpenIA:
+    api_key = "YOUR_TOKEN_OF_OPENAI"
+```
+
+## Instalação
+
+Siga os passos abaixo para configurar o ambiente e instalar as dependências:
+
+Crie um ambiente virtual:
+
+``` bash
+python -m venv venv
+```
+
+* Ative o ambiente virtual:
+
+No Windows:
+```bash
+source venv\Scripts\activate
+```
+
+No Linux/Mac:
+
+```bash
+source venv/bin/activate
+```
+
+* Instale as dependências:
+
+```bash
+pip install fastAPI
+pip install unicorn
+pip install openai
+
+```
+* Execução
+
+Para executar o projeto, utilize os seguintes comandos:
+
+Inicie o servidor Uvicorn:
+
+```bash
+
+uvicorn main:app --reload
+```

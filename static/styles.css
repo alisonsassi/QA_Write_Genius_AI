@@ -1,0 +1,48 @@
+body {
+ background: linear-gradient(#00527c, #6C85BD);
+ color: white;
+ font-family: Arial, sans-serif;
+ margin: 0;
+ padding: 0;
+}
+
+.container {
+ padding: 20px;
+}
+
+#botaoValidar {
+ background-color: #4CAF50;
+ border: none;
+ color: white;
+ padding: 10px 20px;
+ text-align: center;
+ text-decoration: none;
+ display: inline-block;
+ font-size: 16px;
+ margin-bottom: 20px;
+ cursor: pointer;
+ border-radius: 5px;
+}
+
+#botaoValidar:hover {
+ background-color: #45a049;
+}
+
+.modelo-verde {
+ display: none;
+}
+
+.modelo-vermelho {
+ color: red;
+}
+
+.modelo-palavra {
+ display: block;
+ margin-bottom: 5px;
+ padding: 5px 10px;
+ background-color: rgba(255, 255, 255, 0.2);
+}
+
+textarea {
+ resize: both;
+}
