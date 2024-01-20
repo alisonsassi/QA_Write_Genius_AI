@@ -12,38 +12,62 @@
     <div class="container text-center mt-5">
         <h1>QA Write Genius AI</h1>
         <div class="row justify-content-center">
-            <div class="col-md-8">
-                <label for="textoEntrada">Write or Paste your Test Case Writing for QA Write Genius AI suggestion:</label>
-                <textarea id="textoEntrada" class="form-control" rows="6" oninput="validateText()"></textarea><br>
-            </div>
-        </div>
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                
-                <label for="textoSaida" id="labelSaida" style="display:none">Suggestion:</label>
-                <textarea id="textoSaida" class="form-control" rows="6" style="display:none; white-space: pre-line;" readonly></textarea><br>
-                
-                <!-- Generate List Automatic-->
-                <div id="modeloTexto"></div>
+            
+            <!-- Feature - Opinion of AI about the Test Case-->
+            <div class="col-md-3">
+                <div id="loadingSpinnerOpinion_AI" style="display: none;">
+                    <div class="spinner-border text-light" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                    <p>Loading...</p>
+                </div>
+
+                <div id="FieldHTML" class="text-left mb-4" style="display: none; border: 1px solid #ccc;"></div>
 
             </div>
-        </div>
-        <button id="botaoValidar" onclick="mostrarSugestao();" disabled>Validate</button>
-        
-        <div id="loadingSpinner" style="display: none;">
-            <div class="spinner-border text-light" role="status">
-                <span class="sr-only">Loading...</span>
+
+            <!-- Main Feature - Fields for write or paste the Test Case for validation of AI-->
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="col-md-8">
+                        <label for="textoEntrada">Write or Paste your Test Case Writing for QA Write Genius AI suggestion:</label>
+                        <textarea id="textoEntrada" class="form-control" rows="6" oninput="validateText()"></textarea><br>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">
+                        <label for="textoSaida" id="labelSaida" style="display:none">Suggestion:</label>
+                        <textarea id="textoSaida" class="form-control" rows="6" style="display:none; white-space: pre-line;" readonly></textarea><br>
+                        <div id="modeloTexto"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">
+                        <!-- Main Feature - button for validation -->
+                        <button id="botaoValidar" onclick="ShowSuggestion(); ShowOpinionIAinHTML();" disabled>Validate</button>
+                        <!-- show this message, when error in API external -->
+                        <div id="mensageErrorServer" style="display: block; color: red; margin-top: 10px;"></div>
+                        <!-- show a loading while called API external -->
+                        <div id="loadingSpinner" style="display: none;">
+                            <div class="spinner-border text-light" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                            <p>Loading...</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <p>Loading...</p>
         </div>
-        
+    <!--End-->
     </div>
     
+    <footer class="text-center mt-5">
+        <p>Created by Alison Luis Sassi</p>
+        <p>Visit the <a href="https://github.com/alisonsassi/QA_Write_Genius_AI" target="_blank">GitHub repository</a></p>
+    </footer>
+
+    <script src="static/script.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
-
-<script src="static/script.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-
 </html>

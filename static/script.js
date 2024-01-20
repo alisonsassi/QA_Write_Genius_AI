@@ -1,83 +1,102 @@
+// WELCOME in my code :D
 
-
-// Array de palavras chaves
-var modelo = ["ART/Squad:", "Sprint:", "User story:", "Localization:", "Goal:", "Prerequisites:", "Step:"];
-
-
+/**
+ * Add here the words for VALIDATION
+ * @var {modelo} - Variable for usage for validation of key words of Test Case.
+ */
+var modelo = ["ART/Squad:", "Sprint:", "SO:", "User story:", "Localization:", "Goal:", "Prerequisites:", "Step:"];
+/**
+ * Function for validate Text inputed of Test Case
+ * @var {reciveTextofElement} - get Text Input.
+ * @var {formatedModel} - text formated.
+ * @var {modelTextDiv} - Model Div created beafore.
+ */
 function validateText() {
 
- var texto = document.getElementById("textoEntrada").value.toLowerCase();
- var modeloFormatado = '';
- var modeloTextoDiv = document.getElementById("modeloTexto");
+ var reciveTextofElement = document.getElementById("textoEntrada").value.toLowerCase();
+ var formatedModel = '';
+ var modelTextDiv = document.getElementById("modeloTexto");
 
-
-modelo.forEach(function(palavra) {
+modelo.forEach(function(key_work) {
     var div = document.createElement("div");
     div.className = "modelo-palavra";
-    div.textContent = palavra;
-    modeloTextoDiv.appendChild(div);
+    div.textContent = key_work;
+    modelTextDiv.appendChild(div);
 });
 
- modelo.forEach(function (palavra) {
-     var corClasse = texto.includes(palavra.toLowerCase()) ? 'modelo-verde' : 'modelo-vermelho';
-     var classeEsconder = texto.includes(palavra.toLowerCase()) ? 'style="display:none;"' : '';
-     modeloFormatado += '<div class="modelo-palavra ' + corClasse + '"' + classeEsconder + '>' + palavra + '</div>';
+ modelo.forEach(function (key_work) {
+     var classColor = reciveTextofElement.includes(key_work.toLowerCase()) ? 'modelo-verde' : 'modelo-vermelho';
+     var classHide = reciveTextofElement.includes(key_work.toLowerCase()) ? 'style="display:none;"' : '';
+     formatedModel += '<div class="modelo-palavra ' + classColor + '"' + classHide + '>' + key_work + '</div>';
  });
 
- document.getElementById("modeloTexto").innerHTML = '<strong>Model:</strong><br>' + modeloFormatado;
+ document.getElementById("modeloTexto").innerHTML = '<strong>Model:</strong><br>' + formatedModel;
 
- var todasPalavrasEscondidas = modelo.every(function (palavra) {
-     return texto.includes(palavra.toLowerCase());
+ var allWordsHide = modelo.every(function (palavra) {
+     return reciveTextofElement.includes(palavra.toLowerCase());
  });
 
- if (todasPalavrasEscondidas) {
+ if (allWordsHide) {
      document.getElementById("modeloTexto").innerHTML = '<strong style="color: green;">Model OK</strong>';
      document.getElementById("botaoValidar").disabled = false;
  } else {
      document.getElementById("botaoValidar").disabled = true;
  }
+
 }
 
-// Função para criar os elementos HTML dinamicamente
+/**
+ * Function to create HTML elements dynamically 
+ * @var {modelTextDiv} - get Text Input.
+ * @var {div} - create an element with this variable.
+ */
 function createModeloElements() {
-    var modeloTextoDiv = document.getElementById("modeloTexto");
+    var modelTextDiv = document.getElementById("modeloTexto");
 
     modelo.forEach(function(palavra) {
         var div = document.createElement("div");
         div.className = "modelo-palavra";
         div.textContent = palavra;
-        modeloTextoDiv.appendChild(div);
+        modelTextDiv.appendChild(div);
     });
 }
 
-// Executa a função quando a página é carregada
+/**
+ * Function to execute when HTML is beginning.
+ * @return {createModeloElements} - function for created elements in display.
+ * @return {validateText} - function for executable in beginning display.
+ */
 window.addEventListener("load", function() {
     createModeloElements();
-    validateText(); // Chama a função validateText
+    validateText();
 });
-    
-async function mostrarSugestao() {
+
+/**
+ * Function to show suggestions of AI, using Chat GPT.
+ * @var {typedText} - text typed by a human about your test case.
+ * @const {responseData} - data returned by API Open AI.
+ */
+async function ShowSuggestion() {
         document.getElementById("loadingSpinner").style.display = "block";
     
-        var textoDigitado = document.getElementById("textoEntrada").value;
+        var typedText = document.getElementById("textoEntrada").value;
     
         try {
-            const response = await fetch("http://127.0.0.1:8000/receive-human-writing", {
+            const response = await fetch("http://127.0.0.1:8000/suggestion-of-TestCase-typed", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ textoDigitado: textoDigitado }),
+                body: JSON.stringify({ typedText: typedText }),
             });
     
             if (response.ok) {
 
-                let responseData = await response.text();
-                
-                responseData = responseData.replace(/^"|"$/g, '');
-                responseData = responseData.replace(/\\n/g, '\n');
+                let responseData = await response.json();
+                const responseDataJSON = JSON.parse(responseData);
+                const textResponse = responseDataJSON.text_response;
 
-                document.getElementById("textoSaida").value = responseData;
+                document.getElementById("textoSaida").value = textResponse;
                 document.getElementById("textoSaida").style.display = "block";
 
                 document.getElementById("labelSaida").style.display = "block";
@@ -85,26 +104,81 @@ async function mostrarSugestao() {
                 document.getElementById("modeloTexto").style.display = "none";
                 document.getElementById("textoEntrada").addEventListener("input", validateText);
             } else {
-                document.getElementById("mensagemErro").style.color = "red";
-                document.getElementById("mensagemErro").innerText = "Erro na solicitação ao servidor Python. Verifique a conexão ou tente novamente.";
+                document.getElementById("mensageErrorServer").style.color = "red";
+                document.getElementById("mensageErrorServer").innerText = "Erro na solicitação ao servidor Python. Verifique a conexão ou tente novamente.";
             }
         } catch (error) {
             console.error("Erro na solicitação ao servidor Python:", error);
             // Adiciona uma mensagem de erro em vermelho para o usuário
-            document.getElementById("mensagemErro").style.color = "red";
-            document.getElementById("mensagemErro").innerText = "Erro na solicitação ao servidor Python. Verifique a conexão ou tente novamente.";
+            document.getElementById("mensageErrorServer").style.color = "red";
+            document.getElementById("mensageErrorServer").innerText = "Erro na solicitação ao servidor Python. Verifique a conexão ou tente novamente.";
         } finally {
             document.getElementById("loadingSpinner").style.display = "none";
             document.getElementById("textoSaida").readOnly = false;
             document.getElementById("textoSaida").select();
         }
-    }
+}
 
+
+/**
+ * Function for showing the Opinion of AI, using Chat 
+ * @var {FieldHTML} - get Text Input.
+ * @var {newData} - text received of AI.
+ * @var {responseDatainHTML} - data returned by API Open AI. 
+ */
+async function ShowOpinionIAinHTML() {
+    var FieldHTML = document.getElementById("FieldHTML");
+    
+    document.getElementById("loadingSpinnerOpinion_AI").style.display = "block";
+    
+    document.getElementById("loadingSpinner").style.display = "block";
+    
+    var typedText = document.getElementById("textoEntrada").value;
+
+    try {
+        const response = await fetch("http://127.0.0.1:8000/opinion-of-TestCase-typed", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ typedText: typedText }),
+        });
+
+        if (response.ok) {
+            try {
+                const responseData = await response.json();
+                const responseDataJSON = JSON.parse(responseData);
+                const htmlResponse = responseDataJSON.html_response;
+
+
+                console.log(htmlResponse);
+
+                FieldHTML.innerHTML = htmlResponse
+                FieldHTML.style.display = "block";
+
+            } catch (error) {
+                console.error('Erro ao processar a resposta JSON:', error);
+            }
+            
+        } else {
+            document.getElementById("mensageErrorServer").style.color = "red";
+            document.getElementById("mensageErrorServer").innerText = "Erro na solicitação ao servidor Python. Verifique a conexão ou tente novamente.";
+        }
+    } catch (error) {
+        console.error("Erro na solicitação ao servidor Python:", error);
+        document.getElementById("mensageErrorServer").style.color = "red";
+        document.getElementById("mensageErrorServer").innerText = "Erro na solicitação ao servidor Python. Verifique a conexão ou tente novamente.";
+    } finally {
+            // remove Spinner the display  
+        document.getElementById("loadingSpinnerOpinion_AI").style.display = "none";
+    }
+}
 
 /*
 ART/Squad: DTP - Odin
 Sprint: Iris 3
-User Storie: 276266
+User story: 276266
+SO: 12345
 Localization: Global
 
 Goal: As a user, I want to visualize the batch and the expiration date on stock movement when I register a consigned material as a loss.

@@ -16,13 +16,15 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 @app.get("/", tags=["QA Write Genius AI"])
 def read_root():
+    """
+        Function for beginner API. This function renders an HTML.
+    """
     file_path = Path("static") / "index.html"
-
     return FileResponse(file_path, media_type="text/html")
 
-@app.post("/receive-human-writing", tags=["AQA Write Genius AI"])
+@app.post("/suggestion-of-TestCase-typed", tags=["AQA Write Genius AI"])
 
-def get_text(json_data: dict = None):
+def get_text_and_send_return_suggestion(json_data: dict = None):
     """
     Endpoint para receber dados em formato JSON e retornar ao campo o texto gerado
     """
@@ -33,10 +35,11 @@ def get_text(json_data: dict = None):
     inputDescription = json.dumps(json_data)
     suggestionAI = openIArefactory(inputDescription)
 
-    return suggestionAI
+    print(suggestionAI)
+    print("=====================================")
+    print(json.dumps({"text_response": suggestionAI}))
 
-
-
+    return json.dumps({"text_response": suggestionAI})
 
 def openIArefactory(description):
 
@@ -61,6 +64,43 @@ def openIArefactory(description):
         {"role": "system", "content": Teach_Chat_5},
         {"role": "system", "content": Teach_Chat_6},
         {"role": "system", "content": Teach_Chat_7},
+        {"role": "user", "content": description}
+    ]
+    )
+    return completion.choices[0].message.content
+
+
+@app.post("/opinion-of-TestCase-typed", tags=["AQA Write Genius AI"])
+
+def get_text_and_send_return_opinion(json_data: dict = None):
+    """
+    Endpoint para receber dados em formato JSON e retornar ao campo o texto gerado
+    """
+
+    if json_data is None:
+        raise HTTPException(status_code=400, detail="JSON não recebido na API.")
+    
+    inputDescription = json.dumps(json_data)
+    returnOpinionAI = opinionTestCaseTyped(inputDescription)
+    print(returnOpinionAI)
+    print("=====================================")
+
+    return json.dumps({"html_response": returnOpinionAI})
+
+
+def opinionTestCaseTyped(description):
+
+    client = OpenAI(api_key=OpenIA.api_key)
+    
+    Teach_chat_1 = "return in model HTML with color when is written bad, and bold when opinion. The tips write in color blue. The title is in model: '<h3>What do I understand from your writing?</h3>' and rest text in '<p>', but when need destaque, edit this HTML."
+    Teach_chat_2 = "With the following text, being a test case, answer with reasons whether this test case is well written, and tips on how to improve it."
+
+    
+    completion = client.chat.completions.create(
+    model="gpt-3.5-turbo",
+    messages=[
+        {"role": "system", "content": Teach_chat_1},
+        {"role": "system", "content": Teach_chat_2},
         {"role": "user", "content": description}
     ]
     )
