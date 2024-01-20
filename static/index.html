@@ -12,25 +12,20 @@
     <div class="container text-center mt-5">
         <h1>QA Write Genius AI</h1>
         <div class="row justify-content-center">
-            <div class="col-md-6">
+            <div class="col-md-8">
                 <label for="textoEntrada">Write or Paste your Test Case Writing for QA Write Genius AI suggestion:</label>
-                <textarea id="textoEntrada" class="form-control" rows="6" oninput="validarTexto()"></textarea><br>
+                <textarea id="textoEntrada" class="form-control" rows="6" oninput="validateText()"></textarea><br>
             </div>
         </div>
         <div class="row justify-content-center">
-            <div class="col-md-6">
+            <div class="col-md-8">
+                
                 <label for="textoSaida" id="labelSaida" style="display:none">Suggestion:</label>
-                <textarea id="textoSaida" class="form-control" rows="6" style="display:none" readonly></textarea><br>
-                <div id="modeloTexto">
-                    <strong>Model:</strong><br>
-                    <div class="modelo-palavra">ART/Squad:</div>
-                    <div class="modelo-palavra">Sprint:</div>
-                    <div class="modelo-palavra">User story:</div>
-                    <div class="modelo-palavra">Localization:</div>
-                    <div class="modelo-palavra">Goal:</div>
-                    <div class="modelo-palavra">Prerequisites:</div>
-                    <div class="modelo-palavra">Step:</div>
-                </div>
+                <textarea id="textoSaida" class="form-control" rows="6" style="display:none; white-space: pre-line;" readonly></textarea><br>
+                
+                <!-- Generate List Automatic-->
+                <div id="modeloTexto"></div>
+
             </div>
         </div>
         <button id="botaoValidar" onclick="mostrarSugestao();" disabled>Validate</button>
@@ -45,7 +40,6 @@
     </div>
     
 </body>
-
 
 <script src="static/script.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

@@ -1,7 +1,22 @@
-function validarTexto() {
+
+
+// Array de palavras chaves
+var modelo = ["ART/Squad:", "Sprint:", "User story:", "Localization:", "Goal:", "Prerequisites:", "Step:"];
+
+
+function validateText() {
+
  var texto = document.getElementById("textoEntrada").value.toLowerCase();
- var modelo = ["ART/Squad:", "Sprint:", "User story:", "Localization:", "Goal:", "Prerequisites:", "Step:"];
  var modeloFormatado = '';
+ var modeloTextoDiv = document.getElementById("modeloTexto");
+
+
+modelo.forEach(function(palavra) {
+    var div = document.createElement("div");
+    div.className = "modelo-palavra";
+    div.textContent = palavra;
+    modeloTextoDiv.appendChild(div);
+});
 
  modelo.forEach(function (palavra) {
      var corClasse = texto.includes(palavra.toLowerCase()) ? 'modelo-verde' : 'modelo-vermelho';
@@ -23,6 +38,23 @@ function validarTexto() {
  }
 }
 
+// Função para criar os elementos HTML dinamicamente
+function createModeloElements() {
+    var modeloTextoDiv = document.getElementById("modeloTexto");
+
+    modelo.forEach(function(palavra) {
+        var div = document.createElement("div");
+        div.className = "modelo-palavra";
+        div.textContent = palavra;
+        modeloTextoDiv.appendChild(div);
+    });
+}
+
+// Executa a função quando a página é carregada
+window.addEventListener("load", function() {
+    createModeloElements();
+    validateText(); // Chama a função validateText
+});
     
 async function mostrarSugestao() {
         document.getElementById("loadingSpinner").style.display = "block";
@@ -39,17 +71,19 @@ async function mostrarSugestao() {
             });
     
             if (response.ok) {
-                const responseData = await response.text();
-    
-                const formattedText = responseData.replace(/\n/g, '<br>');
-                console.log(formattedText)
 
-                document.getElementById("textoSaida").innerHTML = formattedText;
-    
+                let responseData = await response.text();
+                
+                responseData = responseData.replace(/^"|"$/g, '');
+                responseData = responseData.replace(/\\n/g, '\n');
+
+                document.getElementById("textoSaida").value = responseData;
+                document.getElementById("textoSaida").style.display = "block";
+
                 document.getElementById("labelSaida").style.display = "block";
                 document.getElementById("textoSaida").style.display = "block";
                 document.getElementById("modeloTexto").style.display = "none";
-                document.getElementById("textoEntrada").addEventListener("input", validarTexto);
+                document.getElementById("textoEntrada").addEventListener("input", validateText);
             } else {
                 document.getElementById("mensagemErro").style.color = "red";
                 document.getElementById("mensagemErro").innerText = "Erro na solicitação ao servidor Python. Verifique a conexão ou tente novamente.";
@@ -68,6 +102,7 @@ async function mostrarSugestao() {
 
 
 /*
+ART/Squad: DTP - Odin
 Sprint: Iris 3
 User Storie: 276266
 Localization: Global
@@ -93,4 +128,32 @@ Prerequisites:
 8- System Administration: Function parameters > Chemotherapy > Parameter 181 = Yes and Parameter 306 = Yes.
 
 Step: Chemotherapy > Pharmacy > Cabin feeding > Select the medicine > Right click button > Settle material as loss > Hamburger menu > Functions > Stock Management > Movement > Stock movement > Filter by the medicine`;
+
+
+=====================================================================================
+
+Send requested exams/tests to external Support Laboratory for processing through HL7 message.
+The HL7 message shall be sent to the configured recipient.
+The HL7 message was sent to the configured recipient.
+The HL7 message was not sent to the configured recipient.
+
+ART/Squad: Odin
+Sprint: Sprint 1
+User story: 275637
+Localization: Brasil
+SO: 3126905
+
+Goal: Upon release of the medical prescription for exams, Tasy must send the exams to the external Support laboratory when configured.
+
+Prerequisites:
+
+Access TIE > Routes > Click “SEL” button on upper right corner > Type: “Standard Lab Integration (HL7)” > Click the Configure button next to the “standard.lab.hl7.send.exam.router” route > Save
+
+On Tasy, have an encounter with an order with at least one laboratorial exam/test.
+
+Step:
+
+Have an order with the “Released” status.
+
+Patient Registration > Encounter > Encounter data > Orders > Exams/Tests > Laboratorial > Released order.
 */

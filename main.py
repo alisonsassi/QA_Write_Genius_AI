@@ -1,7 +1,7 @@
 import json
 from openai import OpenAI
 from fastapi import FastAPI, HTTPException
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pathlib import Path
 from configAI import OpenIA
@@ -24,20 +24,18 @@ def read_root():
 
 def get_text(json_data: dict = None):
     """
-    Endpoint para receber dados em formato JSON.
+    Endpoint para receber dados em formato JSON e retornar ao campo o texto gerado
     """
 
     if json_data is None:
         raise HTTPException(status_code=400, detail="JSON não recebido na API.")
     
     inputDescription = json.dumps(json_data)
-
-
     suggestionAI = openIArefactory(inputDescription)
 
-    print(suggestionAI)
-
     return suggestionAI
+
+
 
 
 def openIArefactory(description):

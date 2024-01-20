@@ -63,8 +63,8 @@ source venv/bin/activate
 * Instale as dependências:
 
 ```bash
-pip install fastAPI
-pip install unicorn
+pip install fastapi
+pip install uvicorn
 pip install openai
 
 ```
