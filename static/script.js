@@ -1,5 +1,5 @@
 // WELCOME in my code :D
-
+checkCookie();
 /**
  * Add here the words for VALIDATION
  * @var {modelo} - Variable for usage for validation of key words of Test Case.
@@ -98,18 +98,18 @@ async function ShowSuggestion() {
 
                 document.getElementById("textoSaida").value = textResponse;
                 document.getElementById("textoSaida").style.display = "block";
-
+                document.getElementById("buttons-feedback").style.display = "block";
+                document.getElementById("feedback-message").style.display = "block";
                 document.getElementById("labelSaida").style.display = "block";
-                document.getElementById("textoSaida").style.display = "block";
                 document.getElementById("modeloTexto").style.display = "none";
                 document.getElementById("textoEntrada").addEventListener("input", validateText);
             } else {
+                console.log("Error in Response of Servidor: ", responseData ) // adicionar essa mensagem na Base de dados
                 document.getElementById("mensageErrorServer").style.color = "red";
                 document.getElementById("mensageErrorServer").innerText = "Erro na solicitação ao servidor Python. Verifique a conexão ou tente novamente.";
             }
         } catch (error) {
-            console.error("Erro na solicitação ao servidor Python:", error);
-            // Adiciona uma mensagem de erro em vermelho para o usuário
+            console.error("Error in try-catch:", error); // adicionar essa mensagem na Base de dados
             document.getElementById("mensageErrorServer").style.color = "red";
             document.getElementById("mensageErrorServer").innerText = "Erro na solicitação ao servidor Python. Verifique a conexão ou tente novamente.";
         } finally {
@@ -149,10 +149,6 @@ async function ShowOpinionIAinHTML() {
                 const responseData = await response.json();
                 const responseDataJSON = JSON.parse(responseData);
                 const htmlResponse = responseDataJSON.html_response;
-
-
-                console.log(htmlResponse);
-
                 FieldHTML.innerHTML = htmlResponse
                 FieldHTML.style.display = "block";
 
@@ -231,3 +227,50 @@ Have an order with the “Released” status.
 
 Patient Registration > Encounter > Encounter data > Orders > Exams/Tests > Laboratorial > Released order.
 */
+
+// Função para verificar se o cookie com o ID do usuário existe
+function checkCookie() {
+    var userId = getCookie("userId");
+
+    if (userId) {
+        console.log("Usuário já possui um ID:", userId);
+    } else {
+        // Gerar um ID único para o usuário
+        var newUserId = generateUniqueId();
+
+        // Exibir o ID gerado
+        console.log("Novo ID gerado para o usuário:", newUserId);
+
+        // Armazenar o ID em um cookie (o cookie expira em 365 dias)
+        setCookie("userId", newUserId, 365);
+    }
+}
+
+// Função para obter o valor de um cookie
+function getCookie(name) {
+    var cookieName = name + "=";
+    var cookies = document.cookie.split(';');
+    for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i].trim();
+        if (cookie.indexOf(cookieName) === 0) {
+            return cookie.substring(cookieName.length, cookie.length);
+        }
+    }
+    return null;
+}
+
+// Função para definir um cookie
+function setCookie(name, value, days) {
+    var expires = "";
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + value + expires + "; path=/";
+}
+
+// Função para gerar um ID único simples (pode ser aprimorado para uso real)
+function generateUniqueId() {
+    return 'user_' + Math.random().toString(36).substr(2, 9);
+}

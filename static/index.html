@@ -37,7 +37,17 @@
                 <div class="row">
                     <div class="col-md-8">
                         <label for="textoSaida" id="labelSaida" style="display:none">Suggestion:</label>
-                        <textarea id="textoSaida" class="form-control" rows="6" style="display:none; white-space: pre-line;" readonly></textarea><br>
+                        <!-- Feedback buttons added -->
+                        <div class="btn-group feedback-buttons" id="buttons-feedback" style="display:none" role="group" aria-label="Feedback Buttons">
+                            <button type="button" class="btn btn-danger" id="feedback-negativo" data-toggle="modal" data-target="#modalNegativo">👎</button>
+                            <button type="button" class="btn btn-success" id="feedback-positivo" data-toggle="modal" data-target="#modalPositivo">👍</button>
+                            <button type="button" class="btn btn-secondary" id="feedback-meio-termo" data-toggle="modal" data-target="#modalMeioTermo">➕➖</button>
+                        </div>
+                        <div id="feedback-message" style="display:none; text-align: right; margin-top: 10px;">
+                            Cooperate with the project, evaluate your suggestion, please
+                        </div>
+                        <textarea id="textoSaida" class="form-control" rows="6" style="display:none; white-space: pre-line;" readonly></textarea><br>                                                
+
                         <div id="modeloTexto"></div>
                     </div>
                 </div>
@@ -61,6 +71,73 @@
     <!--End-->
     </div>
     
+
+    <!-- Modals -->
+    <!-- Modal for "Negativo" feedback -->
+    <div class="modal fade" id="modalNegativo" tabindex="-1" role="dialog" aria-labelledby="modalNegativoLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalNegativoLabel" style="color: red;" >👎 Negative Feedback</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p style="color: black;">Feedback Justification:</p>
+                    <textarea id="feedbackJustificationNegativo" class="form-control" rows="3"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary">Send reason</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for "Positivo" feedback -->
+    <div class="modal fade" id="modalPositivo" tabindex="-1" role="dialog" aria-labelledby="modalPositivoLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalPositivoLabel" style="color: greenyellow;">👍 Positive Feedback</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p style="color: black;">Feedback Justification:</p>
+                    <textarea id="feedbackJustificationPositivo" class="form-control" rows="3"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary">Send reason</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for "Mais ou Menos" feedback -->
+    <div class="modal fade" id="modalMeioTermo" tabindex="-1" role="dialog" aria-labelledby="modalMeioTermoLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalMeioTermoLabel" style="color: brown;">➕➖ Neutral Feedback</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p style="color: black;">Feedback Justification:</p>
+                    <textarea id="feedbackJustificationMeioTermo" class="form-control" rows="3"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary">Send reason</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
     <footer class="text-center mt-5">
         <p>Created by Alison Luis Sassi</p>
         <p>Visit the <a href="https://github.com/alisonsassi/QA_Write_Genius_AI" target="_blank">GitHub repository</a></p>

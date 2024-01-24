@@ -5,6 +5,7 @@ from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pathlib import Path
 from configAI import OpenIA
+from connectionDatabase import DatabaseManager
 
 app = FastAPI(
     title="QA Write Genius AI",
@@ -35,9 +36,8 @@ def get_text_and_send_return_suggestion(json_data: dict = None):
     inputDescription = json.dumps(json_data)
     suggestionAI = openIArefactory(inputDescription)
 
-    print(suggestionAI)
-    print("=====================================")
-    print(json.dumps({"text_response": suggestionAI}))
+    DatabaseManager.DataBaseInsert({'TEXT_ORIGINAL': "Typed Text: {}\n".format(json_data.get("typedText", "")),
+                                    'SUGGESTION': suggestionAI})
 
     return json.dumps({"text_response": suggestionAI})
 
@@ -82,11 +82,11 @@ def get_text_and_send_return_opinion(json_data: dict = None):
     
     inputDescription = json.dumps(json_data)
     returnOpinionAI = opinionTestCaseTyped(inputDescription)
-    print(returnOpinionAI)
-    print("=====================================")
+
+    # Já tem o registro no banco de dados? 
+    # se Sim, recuperar e fazer o update. Se não, PENSAR MELHOR NESSA PARTE.
 
     return json.dumps({"html_response": returnOpinionAI})
-
 
 def opinionTestCaseTyped(description):
 
@@ -109,9 +109,3 @@ def opinionTestCaseTyped(description):
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="127.0.0.1", port=8000)
-
-
-
-
-
-
