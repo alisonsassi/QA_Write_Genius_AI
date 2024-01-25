@@ -1,5 +1,7 @@
+
 // WELCOME in my code :D
 checkCookie();
+
 /**
  * Add here the words for VALIDATION
  * @var {modelo} - Variable for usage for validation of key words of Test Case.
@@ -141,7 +143,7 @@ async function ShowOpinionIAinHTML() {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ typedText: typedText }),
+            body: JSON.stringify({ typedText: typedText, userIdCookie: checkCookie()}),
         });
 
         if (response.ok) {
@@ -243,6 +245,8 @@ function checkCookie() {
 
         // Armazenar o ID em um cookie (o cookie expira em 365 dias)
         setCookie("userId", newUserId, 365);
+        
+        return userId
     }
 }
 
@@ -272,5 +276,5 @@ function setCookie(name, value, days) {
 
 // Função para gerar um ID único simples (pode ser aprimorado para uso real)
 function generateUniqueId() {
-    return 'user_' + Math.random().toString(36).substr(2, 9);
+    return 'user_WG_' + Math.random().toString(36).substr(2, 9);
 }

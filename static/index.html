@@ -7,6 +7,8 @@
     <link rel="shortcut icon" type="image/gif" href="https://cdn-icons-gif.flaticon.com/11237/11237439.gif">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="static/styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intro.js@7.2.0/minified/introjs.min.css" >
+
 </head>
 <body>
     <div class="container text-center mt-5">
@@ -146,5 +148,14 @@
     <script src="static/script.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/intro.js@7.2.0/intro.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var scriptElement = document.createElement('script');
+            scriptElement.src = 'static/intro.js';
+            document.head.appendChild(scriptElement);
+        });
+    </script>
+    
 </body>
 </html>

@@ -2,7 +2,10 @@
 
 **Objetivo do Sistema:**
 
-Desenvolver um modelo de inteligência artificial (IA) para melhorar a redação de casos de teste no processo de QA. O sistema será treinado com modelos e regras ideais de escrita, oferecendo sugestões precisas para aprimorar os casos de teste escritos pelos membros da equipe de QA. O objetivo é economizar tempo na redação dos casos de teste, padronizar a linguagem e estrutura, e consequentemente, elevar a qualidade da documentação de testes.
+O Objetivo tem algumas vantagens:
+* Padronizar 
+
+Utilizar um modelo de inteligência artificial (IA) para melhorar a redação de casos de teste no processo de QA. O sistema será treinado com modelos e regras ideais de escrita, oferecendo sugestões precisas para aprimorar os casos de teste escritos pelos membros da equipe de QA. O objetivo é economizar tempo na redação dos casos de teste, padronizar a linguagem e estrutura, e consequentemente, elevar a qualidade da documentação de testes.
 
 **Desenvolvimento do QA Write Genius AI:**
 
