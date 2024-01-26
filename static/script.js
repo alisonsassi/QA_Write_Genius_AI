@@ -15,35 +15,38 @@ var modelo = ["ART/Squad:", "Sprint:", "SO:", "User story:", "Localization:", "G
  */
 function validateText() {
 
- var reciveTextofElement = document.getElementById("textoEntrada").value.toLowerCase();
- var formatedModel = '';
- var modelTextDiv = document.getElementById("modeloTexto");
+    var reciveTextofElement = document.getElementById("textoEntrada").value.toLowerCase();
+    var formatedModel = '';
+    var modelTextDiv = document.getElementById("modeloTexto");
 
-modelo.forEach(function(key_work) {
-    var div = document.createElement("div");
-    div.className = "modelo-palavra";
-    div.textContent = key_work;
-    modelTextDiv.appendChild(div);
-});
+    modelo.forEach(function(key_work) {
+        var div = document.createElement("div");
+        div.className = "modelo-palavra";
+        div.textContent = key_work;
+        modelTextDiv.appendChild(div);
+    });
 
- modelo.forEach(function (key_work) {
-     var classColor = reciveTextofElement.includes(key_work.toLowerCase()) ? 'modelo-verde' : 'modelo-vermelho';
-     var classHide = reciveTextofElement.includes(key_work.toLowerCase()) ? 'style="display:none;"' : '';
-     formatedModel += '<div class="modelo-palavra ' + classColor + '"' + classHide + '>' + key_work + '</div>';
- });
+    modelo.forEach(function (key_work) {
+        var classColor = reciveTextofElement.includes(key_work.toLowerCase()) ? 'modelo-verde' : 'modelo-vermelho';
+        var classHide = reciveTextofElement.includes(key_work.toLowerCase()) ? 'style="display:none;"' : '';
+        formatedModel += '<div class="modelo-palavra ' + classColor + '"' + classHide + '>' + key_work + '</div>';
+    });
 
- document.getElementById("modeloTexto").innerHTML = '<strong>Model:</strong><br>' + formatedModel;
+    document.getElementById("modeloTexto").innerHTML = '<strong>Model:</strong><br>' + formatedModel;
 
- var allWordsHide = modelo.every(function (palavra) {
-     return reciveTextofElement.includes(palavra.toLowerCase());
- });
+    var allWordsHide = modelo.every(function (palavra) {
+        return reciveTextofElement.includes(palavra.toLowerCase());
+    });
 
- if (allWordsHide) {
-     document.getElementById("modeloTexto").innerHTML = '<strong style="color: green;">Model OK</strong>';
-     document.getElementById("botaoValidar").disabled = false;
- } else {
-     document.getElementById("botaoValidar").disabled = true;
- }
+    if (allWordsHide) {
+        document.getElementById("botaoValidar").style.backgroundColor = "green";
+        document.getElementById("modeloTexto").innerHTML = '<strong style="color: green;">Model OK</strong>';
+        document.getElementById("botaoValidar").disabled = false;
+    } else {
+        document.getElementById("botaoValidar").style.backgroundColor = "gray";
+        document.getElementById("modeloTexto").style.display = "block";
+        document.getElementById("botaoValidar").disabled = true;
+    }
 
 }
 

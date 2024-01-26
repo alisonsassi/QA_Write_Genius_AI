@@ -38,6 +38,9 @@
                 </div>
                 <div class="row">
                     <div class="col-md-8">
+
+                        <div id="modeloTexto"></div>
+
                         <label for="textoSaida" id="labelSaida" style="display:none">Suggestion:</label>
                         <!-- Feedback buttons added -->
                         <div class="btn-group feedback-buttons" id="buttons-feedback" style="display:none" role="group" aria-label="Feedback Buttons">
@@ -50,7 +53,6 @@
                         </div>
                         <textarea id="textoSaida" class="form-control" rows="6" style="display:none; white-space: pre-line;" readonly></textarea><br>                                                
 
-                        <div id="modeloTexto"></div>
                     </div>
                 </div>
                 <div class="row">
@@ -154,7 +156,13 @@
             var scriptElement = document.createElement('script');
             scriptElement.src = 'static/intro.js';
             document.head.appendChild(scriptElement);
+        
+            var textoEntrada = document.getElementById('textoEntrada');
+            textoEntrada.addEventListener('input', function () {
+                validateText();
+            });
         });
+
     </script>
     
 </body>
