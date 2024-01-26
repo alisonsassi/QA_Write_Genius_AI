@@ -1,7 +1,5 @@
-import sqlite3
+import sqlite3, os
 from datetime import datetime
-import os
-
 class DatabaseManager:
     
     def connect_to_database():
@@ -50,6 +48,73 @@ class DatabaseManager:
             }
 
             DatabaseManager.DataBaseInsert(example_data)
+
+    def CheckRecordExists(text_original, identification):
+        """
+        Check if a record exists for the given TEXT_ORIGINAL and IDENTIFICATION.
+
+        Parameters:
+        - text_original (str): The original text to search for.
+        - identification (str): The value of the IDENTIFICATION field.
+
+        Returns:
+        - bool: True if a record exists, False otherwise.
+        """
+        conn = DatabaseManager.connect_to_database()
+        cursor = conn.cursor()
+        select_command = '''
+            SELECT 1
+            FROM QA_Write_Genius_AI
+            WHERE TEXT_ORIGINAL = ? AND IDENTIFICATION = ?
+            LIMIT 1
+        '''
+        cursor.execute(select_command, (text_original, identification))
+        result = cursor.fetchone()
+
+        conn.close()
+
+        return bool(result)
+
+
+    def UpdateFieldWithIdentificationAndLastRecord(text_original, userIdCookie, field_to_update, new_value):
+        """
+        Update a specific field for the last occurrence of a specific TEXT_ORIGINAL and IDENTIFICATION.
+
+        Parameters:
+        - text_original (str): The original text to search for.
+        - identification (str): The value of the userIdCookie field.
+        - field_to_update (str): The name of the field to update.
+        - new_value: The new value to set for the specified field.
+        """
+        conn = DatabaseManager.connect_to_database()
+        cursor = conn.cursor()
+        select_command = f'''
+            SELECT * FROM QA_Write_Genius_AI
+            WHERE TEXT_ORIGINAL = ? AND IDENTIFICATION = ?
+            ORDER BY DATE_REQUEST DESC
+            LIMIT 1
+        '''
+
+        cursor.execute(select_command, (text_original, userIdCookie))
+        result = cursor.fetchone()
+
+        if result:
+            update_command = f'''
+                UPDATE QA_Write_Genius_AI
+                SET {field_to_update} = ?
+                WHERE TEXT_ORIGINAL = ? AND IDENTIFICATION = ?
+            '''
+
+            cursor.execute(update_command, (new_value, text_original, userIdCookie))
+            
+            conn.commit()
+            conn.close()
+
+            print(f"{field_to_update} updated for the last occurrence of '{text_original}' with IDENTIFICATION '{userIdCookie}'.")
+
+        else:
+            print(f"No records found for '{text_original}' with IDENTIFICATION '{userIdCookie}'.")
+
 
     def UpdateField(text_original, field_to_update, new_value):
         """
@@ -106,7 +171,6 @@ class DatabaseManager:
                 OBSERVATION
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         '''
-        
         # Verifica se os valores estão presentes e substitui por NULL se não estiverem
         values = (
             datetime.now(),

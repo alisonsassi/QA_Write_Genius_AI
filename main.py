@@ -1,4 +1,4 @@
-import json
+import json, time, re
 from openai import OpenAI
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse, JSONResponse
@@ -7,11 +7,20 @@ from pathlib import Path
 from configAI import OpenIA
 from connectionDatabase import DatabaseManager
 
+class SharedState:
+    def __init__(self):
+        self.globalOpinionTypedAPI = None
+
+shared_state = SharedState()
+
 app = FastAPI(
     title="QA Write Genius AI",
     description="Validation of QA Write Genius AI",
     version="1.0",
 )
+
+
+
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
@@ -23,6 +32,15 @@ def read_root():
     file_path = Path("static") / "index.html"
     return FileResponse(file_path, media_type="text/html")
 
+
+def transformHTMLinText(html_response):
+    """
+    Esta função recebe um texto HTML e retorna o mesmo texto sem as tags HTML.
+    """
+    # Remove as tags HTML usando expressões regulares
+    clean_text = re.sub(r"<[^>]*>", "", html_response)
+    return clean_text
+
 @app.post("/suggestion-of-TestCase-typed", tags=["AQA Write Genius AI"])
 
 def get_text_and_send_return_suggestion(json_data: dict = None):
@@ -33,12 +51,24 @@ def get_text_and_send_return_suggestion(json_data: dict = None):
     if json_data is None:
         raise HTTPException(status_code=400, detail="JSON não recebido na API.")
     
-    inputDescription = json.dumps(json_data)
+    inputDescription = json.dumps(json_data['typedText'])
+
+    userIdCookie = json.dumps(json_data['userIdCookie'])
+
     suggestionAI = openIArefactory(inputDescription)
+    
+    attempts = 0
+    while attempts < 10 and shared_state.globalOpinionTypedAPI is None:
+        attempts += 1
+        shared_state.globalOpinionTypedAPI
+        time.sleep(1)
 
     DatabaseManager.DataBaseInsert({'TEXT_ORIGINAL': "Typed Text: {}\n".format(json_data.get("typedText", "")),
-                                    'SUGGESTION': suggestionAI})
-
+                                    'SUGGESTION': suggestionAI,
+                                    'IDENTIFICATION': userIdCookie,
+                                    'OPINION': shared_state.globalOpinionTypedAPI
+                                    })
+   
     return json.dumps({"text_response": suggestionAI})
 
 def openIArefactory(description):
@@ -80,11 +110,10 @@ def get_text_and_send_return_opinion(json_data: dict = None):
     if json_data is None:
         raise HTTPException(status_code=400, detail="JSON não recebido na API.")
     
-    inputDescription = json.dumps(json_data)
-    returnOpinionAI = opinionTestCaseTyped(inputDescription)
+    inputDescriptionTypedText = json.dumps(json_data['typedText'])
+    returnOpinionAI = opinionTestCaseTyped(inputDescriptionTypedText)
 
-    # Já tem o registro no banco de dados? 
-    # se Sim, recuperar e fazer o update. Se não, PENSAR MELHOR NESSA PARTE.
+    shared_state.globalOpinionTypedAPI = transformHTMLinText(returnOpinionAI)
 
     return json.dumps({"html_response": returnOpinionAI})
 

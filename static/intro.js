@@ -12,8 +12,12 @@
         document.getElementById('FieldHTML').innerHTML = `<h3>What do I understand from your writing?</h3> <br> <p>This particular section serves as the realm where the website's sophisticated artificial intelligence delves into the nuances of your text, deciphering its intricacies to provide you with insightful and tailored recommendations for potential alterations. It operates as a virtual interpreter, analyzing the content with precision and offering nuanced insights.</p> <br> <p><span style="color: blue;"> <b>Tip:</b> </span> When shaping a task or project description, enrich the content by specifying the task's overarching goal, detailing the necessary steps to be taken, and outlining any essential prerequisites or specific requirements. This additional information will significantly enhance comprehension and collaboration.</p>`;
     }
 
+    function isDontShowAgainSet() {
+        return document.cookie.includes('dontShowAgain=true');
+    }
+
     
-    if(introJs()._options.dontShowAgainCookie == 'introjs-dontShowAgain')  {
+    if(!isDontShowAgainSet())  {
         
         showFields()
         introJs().setOption("dontShowAgain", true).setOptions({
@@ -84,6 +88,11 @@
         }).oncomplete(function () {
             hideFields()
         }).onexit(function () {
+            const dontShowAgainCheckbox = document.getElementById('dontShowAgainCheckbox');
+            if (dontShowAgainCheckbox && dontShowAgainCheckbox.checked) {
+                document.cookie = 'dontShowAgain=true;';
+            }
+
             hideFields();
         }).start();
     }

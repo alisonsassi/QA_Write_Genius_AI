@@ -92,7 +92,7 @@ async function ShowSuggestion() {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ typedText: typedText }),
+                body: JSON.stringify({ typedText: typedText, userIdCookie: getCookie("userId") }),
             });
     
             if (response.ok) {
@@ -146,7 +146,7 @@ async function ShowOpinionIAinHTML() {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ typedText: typedText, userIdCookie: checkCookie()}),
+            body: JSON.stringify({ typedText: typedText, userIdCookie: getCookie("userId")}),
         });
 
         if (response.ok) {
@@ -233,22 +233,14 @@ Have an order with the “Released” status.
 Patient Registration > Encounter > Encounter data > Orders > Exams/Tests > Laboratorial > Released order.
 */
 
-// Função para verificar se o cookie com o ID do usuário existe
 function checkCookie() {
     var userId = getCookie("userId");
-
     if (userId) {
         console.log("Usuário já possui um ID:", userId);
     } else {
-        // Gerar um ID único para o usuário
         var newUserId = generateUniqueId();
-
-        // Exibir o ID gerado
         console.log("Novo ID gerado para o usuário:", newUserId);
-
-        // Armazenar o ID em um cookie (o cookie expira em 365 dias)
         setCookie("userId", newUserId, 365);
-        
         return userId
     }
 }
