@@ -82,6 +82,8 @@ window.addEventListener("load", function() {
  * @const {responseData} - data returned by API Open AI.
  */
 async function ShowSuggestion() {
+
+        disableEnableFeedbackButtons('enable');
         document.getElementById("loadingSpinner").style.display = "block";
     
         var typedText = document.getElementById("textoEntrada").value;
@@ -104,10 +106,10 @@ async function ShowSuggestion() {
                 document.getElementById("textoSaida").value = textResponse;
                 document.getElementById("textoSaida").style.display = "block";
                 document.getElementById("buttons-feedback").style.display = "block";
-                document.getElementById("feedback-message").style.display = "block";
                 document.getElementById("labelSaida").style.display = "block";
                 document.getElementById("modeloTexto").style.display = "none";
                 document.getElementById("textoEntrada").addEventListener("input", validateText);
+
             } else {
                 console.log("Error in Response of Servidor: ", responseData ) // adicionar essa mensagem na Base de dados
                 document.getElementById("mensageErrorServer").style.color = "red";
@@ -116,7 +118,7 @@ async function ShowSuggestion() {
         } catch (error) {
             console.error("Error in try-catch:", error); // adicionar essa mensagem na Base de dados
             document.getElementById("mensageErrorServer").style.color = "red";
-            document.getElementById("mensageErrorServer").innerText = "Erro na solicitação ao servidor Python. Verifique a conexão ou tente novamente.";
+            document.getElementById("mensageErrorServer").innerText = "Error in method ShowSuggestion. Try again";
         } finally {
             document.getElementById("loadingSpinner").style.display = "none";
             document.getElementById("textoSaida").readOnly = false;
@@ -170,82 +172,32 @@ async function ShowOpinionIAinHTML() {
         document.getElementById("mensageErrorServer").style.color = "red";
         document.getElementById("mensageErrorServer").innerText = "Erro na solicitação ao servidor Python. Verifique a conexão ou tente novamente.";
     } finally {
-            // remove Spinner the display  
         document.getElementById("loadingSpinnerOpinion_AI").style.display = "none";
     }
 }
 
-/*
-ART/Squad: DTP - Odin
-Sprint: Iris 3
-User story: 276266
-SO: 12345
-Localization: Global
-
-Goal: As a user, I want to visualize the batch and the expiration date on stock movement when I register a consigned material as a loss.
-
-Prerequisites:
-
-1- Material record: Have a medication record as "Consigned" on the record material screen where select if the material is consigned, not consigned, or both.
-
-2- Core Table Settings: Have a "Rule for generating supplier batch" with the medication registered (Quantity to generate = Stock / Invoice Rule = Yes / Rule for Barcode on the Material = No / Rule of the receiving inspection = Yes
-
-3- Core Table Settings: Have a "Stock operation" (Incoming/Outgoing = Incoming / Type of operation = Purchase invoice / Consigned type = Consigned purchase with material / Consumption = Does not affect / Cost calculation = Participate in average cost / Checkbox marked = Account for consigned consumption / Allows editing / Active Status / Summary column = Purchase)
-
-4- Core Table Settings: Have a "Invoice operation" (Stock operation = same registered on previous step / Checkbox marked = Integrates accounts receivable / It is a purchase bill / Establishment stock transfer / Active status / Date rule of the Invoice accounting = Stock update / Generation of the invoice number = Manual / Retains Service Tax = Depends existence ISS on NF / Type of electronic invoice = Not an e-Invoice / Requires purchase order = No / Requires cost center when direct stock location = Requires cost center for direct location (Tasy default)
-
-5- Invoice: Have an Invoice with the same stock operation registered before, an Item (material = medicine) with the amount, cost center, batch, and expiration. (Right-click button > Update invoice total > Calculate invoice)
-
-6- Stock Management: Supplier batch > Search for the medicine from the invoice > The sequence plus the check digit make the code. Example: Sequence = 288876 and Check digit = 9 so the code is 00002888769 (the zeros before are to complete the code that must have eleven digits)
-
-7- Chemotherapy > Pharmacy > Cabin feeding: Have an item added to the cabin. (Use the code with eleven digits to add the medicine)
-
-8- System Administration: Function parameters > Chemotherapy > Parameter 181 = Yes and Parameter 306 = Yes.
-
-Step: Chemotherapy > Pharmacy > Cabin feeding > Select the medicine > Right click button > Settle material as loss > Hamburger menu > Functions > Stock Management > Movement > Stock movement > Filter by the medicine`;
-
-
-=====================================================================================
-
-Send requested exams/tests to external Support Laboratory for processing through HL7 message.
-The HL7 message shall be sent to the configured recipient.
-The HL7 message was sent to the configured recipient.
-The HL7 message was not sent to the configured recipient.
-
-ART/Squad: Odin
-Sprint: Sprint 1
-User story: 275637
-Localization: Brasil
-SO: 3126905
-
-Goal: Upon release of the medical prescription for exams, Tasy must send the exams to the external Support laboratory when configured.
-
-Prerequisites:
-
-Access TIE > Routes > Click “SEL” button on upper right corner > Type: “Standard Lab Integration (HL7)” > Click the Configure button next to the “standard.lab.hl7.send.exam.router” route > Save
-
-On Tasy, have an encounter with an order with at least one laboratorial exam/test.
-
-Step:
-
-Have an order with the “Released” status.
-
-Patient Registration > Encounter > Encounter data > Orders > Exams/Tests > Laboratorial > Released order.
-*/
-
+/**
+ * Function for check the Cookie.
+ * @var {userId} - user generate for indetification.
+ * @var {newUserId} - New user generate for indetification.
+ */
 function checkCookie() {
     var userId = getCookie("userId");
     if (userId) {
         console.log("Usuário já possui um ID:", userId);
     } else {
-        var newUserId = generateUniqueId();
+        var newUserId = 'User_Write_Genius_' + Math.random().toString(36).substr(2, 9);
         console.log("Novo ID gerado para o usuário:", newUserId);
         setCookie("userId", newUserId, 365);
         return userId
     }
 }
 
-// Função para obter o valor de um cookie
+/**
+ * Function for get the Cookie.
+ * @var {cookieName} - name cookie.
+ * @var {cookies} - list of cookie.
+ */
 function getCookie(name) {
     var cookieName = name + "=";
     var cookies = document.cookie.split(';');
@@ -257,8 +209,14 @@ function getCookie(name) {
     }
     return null;
 }
-
-// Função para definir um cookie
+/**
+ * Function for set the Cookie in the browser.
+ * @param {name} - name cookie.
+ * @param {value} - name cookie.
+ * @param {days} - days of cookie.
+ * @var {expires} - number for expire Cookie.
+ * @var {date} - date actual.
+ */
 function setCookie(name, value, days) {
     var expires = "";
     if (days) {
@@ -269,7 +227,121 @@ function setCookie(name, value, days) {
     document.cookie = name + "=" + value + expires + "; path=/";
 }
 
-// Função para gerar um ID único simples (pode ser aprimorado para uso real)
-function generateUniqueId() {
-    return 'user_WG_' + Math.random().toString(36).substr(2, 9);
+/**
+ * Function for send requisition for API.
+ * @var {textareaId} - text of justification.
+ * @var {modalId} - date actual.
+ */
+async function sendFeedbackWithData(modalId, justification) {
+
+    var textIn = document.getElementById("textoEntrada").value;
+    var textOut = document.getElementById("textoSaida").value;
+    var fieldOpinion = document.getElementById("FieldHTML");
+    var userIdCookie = getCookie("userId");
+
+    try {
+        const response = await fetch("http://127.0.0.1:8000/send-feedback-data", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ modalId: modalId, justification: justification, textIn: textIn, textOut: textOut, fieldOpinion: fieldOpinion.innerText,  userIdCookie: userIdCookie}),
+        });
+
+        if (response.ok) {
+            try {
+                $('#' + modalId + ' .form-control').val('');
+                $('#' + modalId).modal('hide');
+                showThanksModal('Your contribution is very important to us. We appreciate you sharing your feedback! 🌟', 'success');
+                setTimeout(function() {
+                    $('#modalThanks').modal('hide');
+                }, 4000);
+
+            } catch (error) {
+                console.error("Error in request send Feedback, error:", error);
+                showThanksModal('An error occurred. Please try again.', 'error');
+            }
+            
+        } else {
+            console.error("Error in request send Feedback, error:", error);
+            showThanksModal('An error occurred. Please try again.', 'error');
+        }
+    } catch (error) {
+        console.error("Error in request send Feedback, error:", error);
+        showThanksModal('An error occurred. Please try again.', 'error');
+    }
+}
+
+function showThanksModal(message, messageType) {
+    var modalThanks = $('#modalThanks');
+    var modalBody = modalThanks.find('.modal-body');
+    var modalHeader = modalThanks.find('.modal-header');
+    
+    modalBody.text(message);
+    if (messageType === 'success') {
+        modalHeader.css({
+                    'background-color': '#87CEEB', // LightBlue color for background
+                    'style': 'black' // Set the text color to black
+                });
+
+    } else if (messageType === 'error') {
+        modalHeader.css({
+            'background-color': '#DC143C', // Crimson color for error
+            'color': 'black' // Set the text color to black
+        });
+    }
+
+    modalThanks.modal('show');
+}       
+
+/**
+ * Function for success of the requisition.
+ * @var {textareaId} - text of justification.
+ * @var {modalId} - date actual.
+ */
+function onAjaxSuccess() {
+    var textareaId = $(this).closest('.modal').find('.form-control').attr('id');
+    var modalId = $(this).closest('.modal').attr('id');
+
+    $('#' + textareaId).val('');
+    $('#' + modalId).modal('hide');
+    showThanksModal('Thank You for Your Feedback! 🌟', 'success');
+    setTimeout(function() {
+        $('#modalThanks').modal('hide');
+    }, 4000);
+}
+/**
+ * Function for success of the requisition.
+ * @var {textareaId} - text of justification.
+ * @var {modalId} - date actual.
+ */
+function onAjaxError() {
+    showThanksModal('An error occurred. Please try again.', 'error');
+}
+
+function showThanksModal(message, messageType) {
+    var modalThanks = $('#modalThanks');
+    var modalBody = modalThanks.find('.modal-body');
+    var modalHeader = modalThanks.find('.modal-header');
+    
+    modalBody.text(message);
+    if (messageType === 'success') {
+        modalHeader.css('background-color', '#87CEEB');
+    } else if (messageType === 'error') {
+        modalHeader.css('background-color', '#DC143C');
+    }
+
+    modalThanks.modal('show');
+}
+
+function disableEnableFeedbackButtons(argument) {
+    var feedbackButtons = $('#buttons-feedback button');
+    if(argument == 'disabled'){
+        feedbackButtons.prop('disabled', true);
+        feedbackButtons.addClass('disabled-button');
+    }
+    if(argument == 'enable'){
+        feedbackButtons.prop('disabled', false);
+        feedbackButtons.removeClass('disabled-button');
+    }
 }

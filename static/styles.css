@@ -65,3 +65,8 @@ textarea {
  resize: both;
 }
 
+.btn[disabled] {
+ text-decoration: line-through;
+ opacity: 0.5; /* Adjust the opacity to your preference */
+ cursor: not-allowed; /* Change the cursor style when disabled */
+}

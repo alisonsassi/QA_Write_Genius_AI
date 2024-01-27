@@ -1,0 +1,116 @@
+
+/*
+ART/Squad: DTP - Odin
+Sprint: Iris 3
+User story: 276266
+SO: 12345
+Localization: Global
+
+Goal: As a user, I want to visualize the batch and the expiration date on stock movement when I register a consigned material as a loss.
+
+Prerequisites:
+
+1- Material record: Have a medication record as "Consigned" on the record material screen where select if the material is consigned, not consigned, or both.
+
+2- Core Table Settings: Have a "Rule for generating supplier batch" with the medication registered (Quantity to generate = Stock / Invoice Rule = Yes / Rule for Barcode on the Material = No / Rule of the receiving inspection = Yes
+
+3- Core Table Settings: Have a "Stock operation" (Incoming/Outgoing = Incoming / Type of operation = Purchase invoice / Consigned type = Consigned purchase with material / Consumption = Does not affect / Cost calculation = Participate in average cost / Checkbox marked = Account for consigned consumption / Allows editing / Active Status / Summary column = Purchase)
+
+4- Core Table Settings: Have a "Invoice operation" (Stock operation = same registered on previous step / Checkbox marked = Integrates accounts receivable / It is a purchase bill / Establishment stock transfer / Active status / Date rule of the Invoice accounting = Stock update / Generation of the invoice number = Manual / Retains Service Tax = Depends existence ISS on NF / Type of electronic invoice = Not an e-Invoice / Requires purchase order = No / Requires cost center when direct stock location = Requires cost center for direct location (Tasy default)
+
+5- Invoice: Have an Invoice with the same stock operation registered before, an Item (material = medicine) with the amount, cost center, batch, and expiration. (Right-click button > Update invoice total > Calculate invoice)
+
+6- Stock Management: Supplier batch > Search for the medicine from the invoice > The sequence plus the check digit make the code. Example: Sequence = 288876 and Check digit = 9 so the code is 00002888769 (the zeros before are to complete the code that must have eleven digits)
+
+7- Chemotherapy > Pharmacy > Cabin feeding: Have an item added to the cabin. (Use the code with eleven digits to add the medicine)
+
+8- System Administration: Function parameters > Chemotherapy > Parameter 181 = Yes and Parameter 306 = Yes.
+
+Step: Chemotherapy > Pharmacy > Cabin feeding > Select the medicine > Right click button > Settle material as loss > Hamburger menu > Functions > Stock Management > Movement > Stock movement > Filter by the medicine`;
+
+
+=====================================================================================
+
+Send requested exams/tests to external Support Laboratory for processing through HL7 message.
+The HL7 message shall be sent to the configured recipient.
+The HL7 message was sent to the configured recipient.
+The HL7 message was not sent to the configured recipient.
+
+ART/Squad: Odin
+Sprint: Sprint 1
+User story: 275637
+Localization: Brasil
+SO: 3126905
+
+Goal: Upon release of the medical prescription for exams, Tasy must send the exams to the external Support laboratory when configured.
+
+Prerequisites:
+
+Access TIE > Routes > Click “SEL” button on upper right corner > Type: “Standard Lab Integration (HL7)” > Click the Configure button next to the “standard.lab.hl7.send.exam.router” route > Save
+
+On Tasy, have an encounter with an order with at least one laboratorial exam/test.
+
+Step:
+
+Have an order with the “Released” status.
+
+Patient Registration > Encounter > Encounter data > Orders > Exams/Tests > Laboratorial > Released order.
+*/
+
+------------------------------------------------------------------
+"Project DIS 15692- Enhancements to the DIS function
+
+Digital Interventional Suite - DIS>Patient>Procedures>add a Coronariography type procedure>right click on the registered procedure>add procedure secondary
+
+Goal: Add a new procedure secondary of type 'Coronariography Procedures' for the patient.
+
+Attached more information"
+
+----------------------------------------------------------------
+
+"Project: Argentina
+Requirement: AR.PEND.PAS.44
+Functional requirement: The system shall configure to only the performing physician can perform the procedure.
+
+Goal: As an administrator, I want to validate if the exam is not executed by the physician who was not defined as executor when the parameter is equal to yes.
+
+Preconditions:
+User Locale/Language: Spanish - Argentina.
+My settings > Menu option: Properties > Locale tab.
+- Have a patient with encounter, insurance, and department.
+Patient Registration > Encounters panel > Insurances tab > Departments tab.
+- The patient must have an order.
+Patient Registration > Select the patient in the function > Encounter data menu option > Orders tab.
+- Have an exam (lab or non-lab) with the performing physician informed.
+Patient Registration > Select the patient in the function> Encounter data menu option > Orders tab> Select the order previously created > Exams/Tests tab > Lab tests > Click on Add > Fill in the required fields > In the Performing physician field > Inform a physician different from that used to login in the system > Click on Save.
+- Have the order submitted.
+Patient Registration > Select the patient in the function> Encounter data menu option > Orders tab > Select the order and submit it.
+- Have the parameter 459 (Only the executing physician can perform the procedure) of the Exam Management function equal to yes.
+System Administration > Function parameters > Exam Management.
+
+Steps:
+Exam Management > Select the patient in the function through filter > Select the exam > Right-click > Update exam data > Validate if the option Perform procedure is not displayed."
+
+
+--------------------------------------------------------
+
+Project 15138 Neuron - Version 1 2021.
+Shall be tested on IOS.
+As patient, I want to Integration disabled
+
+Have a user with access to Tasy.
+
+Have a patient with access to the portal.
+Have a patient with at least one lab exam with status available.
+
+Access to Tasy and enabled PACS integration.
+Server parameters configured in &#x201C;General Registration/Integration User Login Rule&#x201D;
+Integration disabled in the &#x201C;Web Suite Administration/Function Parameter&#x201D; Anyhwere Viewer Access
+Patient portal access released.
+
+Positive Test Case
+Access patient portal > exams
+Open the list of results of exams
+Find an exam in the list, the link to open PACS image must be hidden.
+
+---------------------------------------------------------------------------------

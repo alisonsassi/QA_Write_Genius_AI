@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" type="image/gif" href="https://cdn-icons-gif.flaticon.com/11237/11237439.gif">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="static/styles.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intro.js@7.2.0/minified/introjs.min.css" >
 
@@ -44,13 +45,11 @@
                         <label for="textoSaida" id="labelSaida" style="display:none">Suggestion:</label>
                         <!-- Feedback buttons added -->
                         <div class="btn-group feedback-buttons" id="buttons-feedback" style="display:none" role="group" aria-label="Feedback Buttons">
-                            <button type="button" class="btn btn-danger" id="feedback-negativo" data-toggle="modal" data-target="#modalNegativo">👎</button>
-                            <button type="button" class="btn btn-success" id="feedback-positivo" data-toggle="modal" data-target="#modalPositivo">👍</button>
-                            <button type="button" class="btn btn-secondary" id="feedback-meio-termo" data-toggle="modal" data-target="#modalMeioTermo">➕➖</button>
+                            <button type="button" class="btn btn-danger" id="feedback-negativo" data-toggle="modal" data-target="#Negativo">👎</button>
+                            <button type="button" class="btn btn-success" id="feedback-positivo" data-toggle="modal" data-target="#Positivo">👍</button>
+                            <button type="button" class="btn btn-secondary" id="feedback-meio-termo" data-toggle="modal" data-target="#MeioTermo" >➕➖</button>
                         </div>
-                        <div id="feedback-message" style="display:none; text-align: right; margin-top: 10px;">
-                            Cooperate with the project, evaluate your suggestion, please
-                        </div>
+                        <br>
                         <textarea id="textoSaida" class="form-control" rows="6" style="display:none; white-space: pre-line;" readonly></textarea><br>                                                
 
                     </div>
@@ -74,15 +73,14 @@
         </div>
     <!--End-->
     </div>
-    
 
     <!-- Modals -->
     <!-- Modal for "Negativo" feedback -->
-    <div class="modal fade" id="modalNegativo" tabindex="-1" role="dialog" aria-labelledby="modalNegativoLabel" aria-hidden="true">
+    <div class="modal fade" id="Negativo" tabindex="-1" role="dialog" aria-labelledby="NegativoLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalNegativoLabel" style="color: red;" >👎 Negative Feedback</h5>
+                    <h5 class="modal-title" id="NegativoLabel" style="color: red;" >👎 Negative Feedback</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -99,11 +97,11 @@
     </div>
 
     <!-- Modal for "Positivo" feedback -->
-    <div class="modal fade" id="modalPositivo" tabindex="-1" role="dialog" aria-labelledby="modalPositivoLabel" aria-hidden="true">
+    <div class="modal fade" id="Positivo" tabindex="-1" role="dialog" aria-labelledby="PositivoLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalPositivoLabel" style="color: greenyellow;">👍 Positive Feedback</h5>
+                    <h5 class="modal-title" id="PositivoLabel" style="color: greenyellow;">👍 Positive Feedback</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -120,11 +118,11 @@
     </div>
 
     <!-- Modal for "Mais ou Menos" feedback -->
-    <div class="modal fade" id="modalMeioTermo" tabindex="-1" role="dialog" aria-labelledby="modalMeioTermoLabel" aria-hidden="true">
+    <div class="modal fade" id="MeioTermo" tabindex="-1" role="dialog" aria-labelledby="MeioTermoLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalMeioTermoLabel" style="color: brown;">➕➖ Neutral Feedback</h5>
+                    <h5 class="modal-title" id="MeioTermoLabel" style="color: brown;">➕➖ Neutral Feedback</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -140,7 +138,25 @@
         </div>
     </div>
 
-
+<!-- Adicione esta div ao final do seu HTML para o modal de agradecimento -->
+<div class="modal fade" id="modalThanks" tabindex="-1" role="dialog" aria-labelledby="modalThanksLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalThanksLabel">Thank You for Your Feedback!</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div style="color: black;" class="modal-body">
+                Your contribution is very important to us. We appreciate you sharing your feedback!
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
     <footer class="text-center mt-5">
         <p>Created by Alison Luis Sassi</p>
@@ -153,6 +169,7 @@
     <script src="https://cdn.jsdelivr.net/npm/intro.js@7.2.0/intro.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            
             var scriptElement = document.createElement('script');
             scriptElement.src = 'static/intro.js';
             document.head.appendChild(scriptElement);
@@ -161,9 +178,18 @@
             textoEntrada.addEventListener('input', function () {
                 validateText();
             });
-        });
 
+            $(document).ready(function () {
+            $('.modal-footer button').on('click', function () {
+                var modalId = $(this).closest('.modal').attr('id');
+                var justification = $(this).closest('.modal').find('.modal-body').find('.form-control').val();
+                console.log(justification)
+
+                sendFeedbackWithData(modalId, justification);
+                disableEnableFeedbackButtons('disabled');
+                });
+            });
+        });
     </script>
-    
 </body>
 </html>
